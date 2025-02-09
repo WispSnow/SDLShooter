@@ -3,9 +3,9 @@
 
 #include "Scene.h"
 #include "Object.h"
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <string>
 #include <map>
 
@@ -28,8 +28,8 @@ public:
     void render();
 
     // 渲染文字函数
-    SDL_Point renderTextCentered(std::string text, float posY, bool isTitle);
-    void renderTextPos(std::string text, int posX, int posY, bool isLeft = true);
+    SDL_FPoint renderTextCentered(std::string text, float posY, bool isTitle);
+    void renderTextPos(std::string text, float posX, float posY, bool isLeft = true);
 
     // setters
     void setFinalScore(int score) { finalScore = score; }
@@ -38,8 +38,8 @@ public:
     // getters
     SDL_Window* getWindow() { return window; }
     SDL_Renderer* getRenderer() { return renderer; }
-    int getWindowWidth() { return windowWidth; }
-    int getWindowHeight() { return windowHeight; }
+    float getWindowWidth() { return windowWidth; }
+    float getWindowHeight() { return windowHeight; }
     int getFinalScore() { return finalScore; }
     std::multimap<int, std::string, std::greater<int>>& getLeaderBoard() { return leaderBoard;} // 返回leaderBoard的引用
 private:
@@ -56,8 +56,8 @@ private:
     Scene* currentScene = nullptr;
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
-    int windowWidth = 600;
-    int windowHeight = 800;
+    float windowWidth = 600;
+    float windowHeight = 800;
     int FPS = 60;
     Uint32 frameTime;
     float deltaTime;

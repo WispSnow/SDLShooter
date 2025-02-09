@@ -9,7 +9,7 @@ void SceneTitle::init()
     bgm = Mix_LoadMUS("assets/music/06_Battle_in_Space_Intro.ogg");
     if (bgm == nullptr)
     {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load music: %s", Mix_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load music: %s", SDL_GetError());
     }
     Mix_PlayMusic(bgm, -1);
 
@@ -47,8 +47,8 @@ void SceneTitle::clean()
 
 void SceneTitle::handleEvent(SDL_Event *event)
 {
-    if (event->type == SDL_KEYDOWN){
-        if (event->key.keysym.scancode == SDL_SCANCODE_J){
+    if (event->type == SDL_EVENT_KEY_DOWN){
+        if (event->key.scancode == SDL_SCANCODE_J){
             auto sceneMain = new SceneMain();
             game.changeScene(sceneMain);
         }

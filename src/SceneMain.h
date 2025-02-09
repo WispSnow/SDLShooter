@@ -6,16 +6,15 @@
 #include <list>
 #include <random>
 #include <map>
-#include <SDL.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_mixer/SDL_mixer.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 
 class Game;
 
 class SceneMain : public Scene {
 public:
-    ~SceneMain();
 
     void update(float deltaTime) override;
     void render() override;

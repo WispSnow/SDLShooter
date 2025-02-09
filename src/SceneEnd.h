@@ -3,7 +3,7 @@
 
 #include "Scene.h"
 #include <string>
-#include <SDL_mixer.h>
+#include <SDL3_mixer/SDL_mixer.h>
 
 class SceneEnd : public Scene{
 public:

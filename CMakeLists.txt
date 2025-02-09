@@ -20,10 +20,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR})
 set(TARGET ${PROJECT_NAME}-${CMAKE_SYSTEM_NAME})
 
 # 查找并载入Cmake预设
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(SDL2_mixer REQUIRED)
-find_package(SDL2_ttf REQUIRED)
+find_package(SDL3 REQUIRED)
+find_package(SDL3_image REQUIRED)
+find_package(SDL3_mixer REQUIRED)
+find_package(SDL3_ttf REQUIRED)
 
 # 添加可执行文件
 add_executable(${TARGET} 
@@ -36,8 +36,8 @@ add_executable(${TARGET}
 
 # 链接库
 target_link_libraries(${TARGET}
-                        ${SDL2_LIBRARIES}
-                        SDL2_image::SDL2_image
-                        SDL2_mixer::SDL2_mixer
-                        SDL2_ttf::SDL2_ttf
+                        ${SDL3_LIBRARIES}
+                        SDL3_image::SDL3_image
+                        SDL3_mixer::SDL3_mixer
+                        SDL3_ttf::SDL3_ttf
                         )

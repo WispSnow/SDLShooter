@@ -8,14 +8,14 @@ void SceneEnd::init()
     // 载入背景音乐
     bgm = Mix_LoadMUS("assets/music/06_Battle_in_Space_Intro.ogg");
     if (!bgm) {
-        SDL_LogError(SDL_LOG_PRIORITY_ERROR, "Failed to load music: %s", Mix_GetError());
+        SDL_LogError(SDL_LOG_PRIORITY_ERROR, "Failed to load music: %s", SDL_GetError());
     }
     Mix_PlayMusic(bgm, -1);
 
-    if (!SDL_IsTextInputActive()){
-        SDL_StartTextInput();
+    if (!SDL_TextInputActive(game.getWindow())){
+        SDL_StartTextInput(game.getWindow());
     }
-    if (!SDL_IsTextInputActive()){
+    if (!SDL_TextInputActive(game.getWindow())){
         SDL_LogError(SDL_LOG_PRIORITY_ERROR, "Failed to start text input: %s", SDL_GetError());
     }
 }
@@ -48,26 +48,26 @@ void SceneEnd::clean()
 void SceneEnd::handleEvent(SDL_Event *event)
 {
     if (isTyping){
-        if (event->type == SDL_TEXTINPUT){
+        if (event->type == SDL_EVENT_TEXT_INPUT){
             name += event->text.text;
         }
-        if (event->type == SDL_KEYDOWN){
-            if (event->key.keysym.scancode == SDL_SCANCODE_RETURN){
+        if (event->type == SDL_EVENT_KEY_DOWN){
+            if (event->key.scancode == SDL_SCANCODE_RETURN){
                 isTyping = false;
-                SDL_StopTextInput();
+                SDL_StopTextInput(game.getWindow());
                 if (name == ""){
                     name = "无名氏";
                 }
                 game.insertLeaderBoard(game.getFinalScore(), name);
             }
-            if (event->key.keysym.scancode == SDL_SCANCODE_BACKSPACE){
+            if (event->key.scancode == SDL_SCANCODE_BACKSPACE){
                 removeLastUTF8Char(name);
             }
         }
     }
     else{
-        if (event->type == SDL_KEYDOWN){
-            if (event->key.keysym.scancode == SDL_SCANCODE_J){
+        if (event->type == SDL_EVENT_KEY_DOWN){
+            if (event->key.scancode == SDL_SCANCODE_J){
                 auto sceneMain = new SceneMain();
                 game.changeScene(sceneMain);
             }
@@ -86,7 +86,7 @@ void SceneEnd::renderPhase1()
     game.renderTextCentered(instrutionText, 0.6, false);
 
     if (name != ""){
-        SDL_Point p = game.renderTextCentered(name, 0.8, false);
+        SDL_FPoint p = game.renderTextCentered(name, 0.8, false);
         if (blinkTimer < 0.5){
             game.renderTextPos("_", p.x, p.y);
         }
