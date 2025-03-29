@@ -2,7 +2,7 @@
 C++游戏开发的入门教程，利用SDL2（SDL3）开发一款太空战机类型的游戏
 
 ## 项目简介
-此项目为教学演示用途，配套视频教程：[SDL2与太空战机](https://www.bilibili.com/video/BV1wSCFYQEyc/?share_source=copy_web&vd_source=38785218fa1d2c5dfde79f8b24baf0b6) 
+此项目为教学演示用途，配套教程：[视频](https://www.bilibili.com/video/BV1wSCFYQEyc/?share_source=copy_web&vd_source=38785218fa1d2c5dfde79f8b24baf0b6)，[文字](https://cppgamedev.top/courses/sdl-space-shooter)
 
 提示：仓库中包含了所有课节的代码，你可以根据视频教程的进度查找对应的代码。<img src="https://theorhythm.top/gamedev/tags.png" style='width: 400px;' />
 <img src="https://theorhythm.top/gamedev/download.png" style='width: 800px;' />
@@ -61,11 +61,15 @@ sudo apt install cmake libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-t
 
 ### 安装并配置Visual Studio Code编辑器
 这一节所有平台都一样。
-3. 打开[官网](https://code.visualstudio.com/)，选择对应平台的安装包下载安装<img src="https://theorhythm.top/gamedev/f5a290cbf12c10e0feedd119034e5925.png" style='width: 800px;' />
-4. 在插件页面搜索“C++”，然后安装插件：`C/C++ Extension Pack` <img src="https://theorhythm.top/gamedev/a6aa4619a9095f51649b4393cc7afd8c.png" style='width: 800px;' /> 至此配置已经完成，后面几步可任选是否执行。
-5. 可选：再次搜索Chinese，安装插件 `Chinese (Simplified) (简体中文)` ，重启后即可改成中文界面。
-6. 可选：打开“设置”并搜索“cmake status bar”，将“Status Bar Visibility” 改为“visible”。（此设置可方便地更改编译模式为debug或者release等）。<img src="https://theorhythm.top/gamedev/aace361efb69b6c08ab5b783a27887af.png" style='width: 800px;' />
-7. 可选：搜索安装AI辅助插件（选一个安装即可，以免冲突）。
+1. 打开[官网](https://code.visualstudio.com/)，选择对应平台的安装包下载安装<img src="https://theorhythm.top/gamedev/f5a290cbf12c10e0feedd119034e5925.png" style='width: 800px;' />
+
+2. 在插件页面搜索“C++”，然后安装插件：`C/C++ Extension Pack` <img src="https://theorhythm.top/gamedev/a6aa4619a9095f51649b4393cc7afd8c.png" style='width: 800px;' /> 至此配置已经完成，后面几步可任选是否执行。
+
+3. 可选：再次搜索Chinese，安装插件 `Chinese (Simplified) (简体中文)` ，重启后即可改成中文界面。
+
+4. 可选：打开“设置”并搜索“cmake status bar”，将“Status Bar Visibility” 改为“visible”。（此设置可方便地更改编译模式为debug或者release等）。<img src="https://theorhythm.top/gamedev/aace361efb69b6c08ab5b783a27887af.png" style='width: 800px;' />
+
+5. 可选：搜索安装AI辅助插件（选一个安装即可，以免冲突）。
 	- 如果无法科学上网，推荐国内可用且下载量大的，例如 `CodeGeeX`，`fitten`等。
 	- 如果能够科学上网，免费的推荐`Codeium`，付费的推荐 `Github Copilot`。
 

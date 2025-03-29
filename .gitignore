@@ -44,3 +44,6 @@ build-*/
 *.exe
 *.out
 *.app
+
+# msc
+assets/save.dat
