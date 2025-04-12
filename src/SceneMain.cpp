@@ -103,6 +103,8 @@ void SceneMain::init()
     projectilePlayerPrototype.width /= 4;
     projectilePlayerPrototype.height /= 4;
 
+    SDL_Log("memory size of projectilePlayerPrototype %d", sizeof(projectilePlayerPrototype));
+
     enemyPrototype.texture = IMG_LoadTexture(game.getRenderer(), "assets/image/insect-2.png");
     SDL_QueryTexture(enemyPrototype.texture, NULL, NULL, &enemyPrototype.width, &enemyPrototype.height);
     enemyPrototype.width /= 4;
@@ -125,7 +127,8 @@ void SceneMain::init()
     itemLifePrototype.height /= 4;
 
     // 初始化内存池
-    playerProjPool = new PlayerProjPool(projectilePlayerPrototype);
+    playerProjPool = new ObjectPool<ProjectilePlayer>(projectilePlayerPrototype);
+    enemyProjPool = new ObjectPool<ProjectileEnemy>(projectileEnemyPrototype);
 }
 
 void SceneMain::clean()
@@ -138,11 +141,11 @@ void SceneMain::clean()
     }
     sounds.clear();
     
-    for (auto &projectile : projectilesPlayer){
-        if (projectile != nullptr){
-            delete projectile;
-        }
-    }
+    // for (auto &projectile : projectilesPlayer){
+    //     if (projectile != nullptr){
+    //         delete projectile;
+    //     }
+    // }
     projectilesPlayer.clear();
 
     for (auto &enemy : enemies){
@@ -152,11 +155,11 @@ void SceneMain::clean()
     }
     enemies.clear();
 
-    for (auto &projectile : projectilesEnemy){
-        if (projectile != nullptr){
-            delete projectile;
-        }
-    }
+    // for (auto &projectile : projectilesEnemy){
+    //     if (projectile != nullptr){
+    //         delete projectile;
+    //     }
+    // }
     projectilesEnemy.clear();
 
     for (auto &explosion : explosions){
@@ -176,6 +179,9 @@ void SceneMain::clean()
     // 清理内存池
     if (playerProjPool != nullptr){
         delete playerProjPool;
+    }
+    if (enemyProjPool != nullptr){
+        delete enemyProjPool;
     }
 
     // 清理ui
@@ -398,7 +404,8 @@ void SceneMain::updateEnemyProjectiles(float deltaTime)
             projectile->position.y < - margin ||
             projectile->position.x < - margin ||
             projectile->position.x > game.getWindowWidth() + margin){
-            delete projectile;
+            // delete projectile;
+            enemyProjPool->release(projectile);
             it = projectilesEnemy.erase(it);
         }else {
             SDL_Rect projectileRect = {
@@ -415,7 +422,8 @@ void SceneMain::updateEnemyProjectiles(float deltaTime)
             };
             if (SDL_HasIntersection(&projectileRect, &playerRect) && !isDead){
                 player.currentHealth -= projectile->damage;
-                delete projectile;
+                // delete projectile;
+                enemyProjPool->release(projectile);
                 it = projectilesEnemy.erase(it);
                 Mix_PlayChannel(-1, sounds["hit"], 0);
             } else {
@@ -478,7 +486,8 @@ void SceneMain::renderEnemies()
 
 void SceneMain::shootEnemy(Enemy *enemy)
 {
-    auto projectile = new ProjectileEnemy(projectileEnemyPrototype);
+    // auto projectile = new ProjectileEnemy(projectileEnemyPrototype);
+    auto projectile = enemyProjPool->create();
     projectile->position.x = enemy->position.x + enemy->width / 2 - projectile->width / 2;
     projectile->position.y = enemy->position.y + enemy->height / 2 - projectile->height / 2;
     projectile->direction = getDirection(enemy);

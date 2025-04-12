@@ -3,7 +3,7 @@
 
 #include "Scene.h"
 #include "Object.h"
-#include "PlayerProjPool.h"
+#include "ObjectPool.h"
 #include <list>
 #include <random>
 #include <map>
@@ -42,8 +42,10 @@ private:
     Explosion explosionPrototype;
     Item itemLifePrototype;
 
-    // 创建内存池
-    PlayerProjPool* playerProjPool = nullptr;
+    // 创建对象池
+    // PlayerProjPool* playerProjPool = nullptr;
+    ObjectPool<ProjectilePlayer>* playerProjPool = nullptr;
+    ObjectPool<ProjectileEnemy>* enemyProjPool = nullptr;
 
     // 创建每个物体的容器
     std::list<Enemy*> enemies;

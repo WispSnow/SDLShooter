@@ -5,10 +5,12 @@
 # IDE
 .vscode/
 .config/
+.idea/
 
 # build
 build/
 build-*/
+cmake-build-*/
 *-darwin
 *-Darwin
 
