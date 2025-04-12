@@ -97,32 +97,35 @@ void SceneMain::init()
     player.position.x = game.getWindowWidth() / 2 - player.width / 2;
     player.position.y = game.getWindowHeight() - player.height;
 
-    // 初始化模版
-    projectilePlayerTemplate.texture = IMG_LoadTexture(game.getRenderer(), "assets/image/laser-1.png");
-    SDL_QueryTexture(projectilePlayerTemplate.texture, NULL, NULL, &projectilePlayerTemplate.width, &projectilePlayerTemplate.height);
-    projectilePlayerTemplate.width /= 4;
-    projectilePlayerTemplate.height /= 4;
+    // 初始化原型
+    projectilePlayerPrototype.texture = IMG_LoadTexture(game.getRenderer(), "assets/image/laser-1.png");
+    SDL_QueryTexture(projectilePlayerPrototype.texture, NULL, NULL, &projectilePlayerPrototype.width, &projectilePlayerPrototype.height);
+    projectilePlayerPrototype.width /= 4;
+    projectilePlayerPrototype.height /= 4;
 
-    enemyTemplate.texture = IMG_LoadTexture(game.getRenderer(), "assets/image/insect-2.png");
-    SDL_QueryTexture(enemyTemplate.texture, NULL, NULL, &enemyTemplate.width, &enemyTemplate.height);
-    enemyTemplate.width /= 4;
-    enemyTemplate.height /= 4;
+    enemyPrototype.texture = IMG_LoadTexture(game.getRenderer(), "assets/image/insect-2.png");
+    SDL_QueryTexture(enemyPrototype.texture, NULL, NULL, &enemyPrototype.width, &enemyPrototype.height);
+    enemyPrototype.width /= 4;
+    enemyPrototype.height /= 4;
 
-    projectileEnemyTemplate.texture = IMG_LoadTexture(game.getRenderer(), "assets/image/bullet-1.png");
-    SDL_QueryTexture(projectileEnemyTemplate.texture, NULL, NULL, &projectileEnemyTemplate.width, &projectileEnemyTemplate.height);
-    projectileEnemyTemplate.width /= 2;
-    projectileEnemyTemplate.height /= 2;
+    projectileEnemyPrototype.texture = IMG_LoadTexture(game.getRenderer(), "assets/image/bullet-1.png");
+    SDL_QueryTexture(projectileEnemyPrototype.texture, NULL, NULL, &projectileEnemyPrototype.width, &projectileEnemyPrototype.height);
+    projectileEnemyPrototype.width /= 2;
+    projectileEnemyPrototype.height /= 2;
 
-    explosionTemplate.texture = IMG_LoadTexture(game.getRenderer(), "assets/effect/explosion.png");
-    SDL_QueryTexture(explosionTemplate.texture, NULL, NULL, &explosionTemplate.width, &explosionTemplate.height);
-    explosionTemplate.totlaFrame = explosionTemplate.width / explosionTemplate.height;
-    explosionTemplate.height *= 2;
-    explosionTemplate.width = explosionTemplate.height;
+    explosionPrototype.texture = IMG_LoadTexture(game.getRenderer(), "assets/effect/explosion.png");
+    SDL_QueryTexture(explosionPrototype.texture, NULL, NULL, &explosionPrototype.width, &explosionPrototype.height);
+    explosionPrototype.totlaFrame = explosionPrototype.width / explosionPrototype.height;
+    explosionPrototype.height *= 2;
+    explosionPrototype.width = explosionPrototype.height;
 
-    itemLifeTemplate.texture = IMG_LoadTexture(game.getRenderer(), "assets/image/bonus_life.png");
-    SDL_QueryTexture(itemLifeTemplate.texture, NULL, NULL, &itemLifeTemplate.width, &itemLifeTemplate.height);
-    itemLifeTemplate.width /= 4;
-    itemLifeTemplate.height /= 4;
+    itemLifePrototype.texture = IMG_LoadTexture(game.getRenderer(), "assets/image/bonus_life.png");
+    SDL_QueryTexture(itemLifePrototype.texture, NULL, NULL, &itemLifePrototype.width, &itemLifePrototype.height);
+    itemLifePrototype.width /= 4;
+    itemLifePrototype.height /= 4;
+
+    // 初始化内存池
+    playerProjPool = new PlayerProjPool(projectilePlayerPrototype);
 }
 
 void SceneMain::clean()
@@ -170,6 +173,11 @@ void SceneMain::clean()
     }
     items.clear();
 
+    // 清理内存池
+    if (playerProjPool != nullptr){
+        delete playerProjPool;
+    }
+
     // 清理ui
     if (uiHealth != nullptr){
         SDL_DestroyTexture(uiHealth);
@@ -180,26 +188,26 @@ void SceneMain::clean()
         TTF_CloseFont(scoreFont);
     }
 
-    // 清理模版
+    // 清理原型
     if (player.texture != nullptr)
     {
         SDL_DestroyTexture(player.texture);
     }
-    if (projectilePlayerTemplate.texture != nullptr)
+    if (projectilePlayerPrototype.texture != nullptr)
     {
-        SDL_DestroyTexture(projectilePlayerTemplate.texture);
+        SDL_DestroyTexture(projectilePlayerPrototype.texture);
     }
-    if (enemyTemplate.texture != nullptr){
-        SDL_DestroyTexture(enemyTemplate.texture);
+    if (enemyPrototype.texture != nullptr){
+        SDL_DestroyTexture(enemyPrototype.texture);
     }
-    if (projectileEnemyTemplate.texture != nullptr){
-        SDL_DestroyTexture(projectileEnemyTemplate.texture);
+    if (projectileEnemyPrototype.texture != nullptr){
+        SDL_DestroyTexture(projectileEnemyPrototype.texture);
     }
-    if (explosionTemplate.texture != nullptr){
-        SDL_DestroyTexture(explosionTemplate.texture);
+    if (explosionPrototype.texture != nullptr){
+        SDL_DestroyTexture(explosionPrototype.texture);
     }
-    if (itemLifeTemplate.texture != nullptr){
-        SDL_DestroyTexture(itemLifeTemplate.texture);
+    if (itemLifePrototype.texture != nullptr){
+        SDL_DestroyTexture(itemLifePrototype.texture);
     }
 
     // 清理音乐资源
@@ -256,7 +264,8 @@ void SceneMain::keyboardControl(float deltaTime)
 void SceneMain::shootPlayer()
 {
     // 在这里实现发射子弹的逻辑
-    auto projectile = new ProjectilePlayer(projectilePlayerTemplate);
+    // auto projectile = new ProjectilePlayer(projectilePlayerPrototype);
+    auto projectile = playerProjPool->create();
     projectile->position.x = player.position.x + player.width / 2 - projectile->width / 2;
     projectile->position.y = player.position.y;
     projectilesPlayer.push_back(projectile);
@@ -271,7 +280,8 @@ void SceneMain::updatePlayerProjectiles(float deltaTime)
         projectile->position.y -= projectile->speed * deltaTime;
         // 检查子弹是否超出屏幕
         if (projectile->position.y + margin < 0){
-            delete projectile;
+            // delete projectile;
+            playerProjPool->release(projectile);
             it = projectilesPlayer.erase(it);
         }else {
             bool hit = false;
@@ -290,7 +300,8 @@ void SceneMain::updatePlayerProjectiles(float deltaTime)
                 };
                 if (SDL_HasIntersection(&enemyRect, &projectileRect)){
                     enemy->currentHealth -= projectile->damage;
-                    delete projectile;
+                    // delete projectile;
+                    playerProjPool->release(projectile);
                     it = projectilesPlayer.erase(it);
                     hit = true;
                     Mix_PlayChannel(-1, sounds["hit"], 0);
@@ -337,7 +348,7 @@ void SceneMain::spawEnemy()
     if (dis(gen) > 1 / 60.0f){
         return;
     }
-    Enemy* enemy = new Enemy(enemyTemplate);
+    Enemy* enemy = new Enemy(enemyPrototype);
     enemy->position.x = dis(gen) * (game.getWindowWidth() - enemy->width);
     enemy->position.y = - enemy->height;
     enemies.push_back(enemy);
@@ -423,7 +434,7 @@ void SceneMain::updatePlayer(float)
         // TODO: Game over
         auto currentTime = SDL_GetTicks();
         isDead = true;
-        auto explosion = new Explosion(explosionTemplate);
+        auto explosion = new Explosion(explosionPrototype);
         explosion->position.x = player.position.x + player.width / 2 - explosion->width / 2;
         explosion->position.y = player.position.y + player.height / 2 - explosion->height / 2;
         explosion->startTime = currentTime;
@@ -467,7 +478,7 @@ void SceneMain::renderEnemies()
 
 void SceneMain::shootEnemy(Enemy *enemy)
 {
-    auto projectile = new ProjectileEnemy(projectileEnemyTemplate);
+    auto projectile = new ProjectileEnemy(projectileEnemyPrototype);
     projectile->position.x = enemy->position.x + enemy->width / 2 - projectile->width / 2;
     projectile->position.y = enemy->position.y + enemy->height / 2 - projectile->height / 2;
     projectile->direction = getDirection(enemy);
@@ -488,7 +499,7 @@ SDL_FPoint SceneMain::getDirection(Enemy *enemy)
 void SceneMain::enemyExplode(Enemy *enemy)
 {
     auto currentTime = SDL_GetTicks();
-    auto explosion = new Explosion(explosionTemplate);
+    auto explosion = new Explosion(explosionPrototype);
     explosion->position.x = enemy->position.x + enemy->width / 2 - explosion->width / 2;
     explosion->position.y = enemy->position.y + enemy->height / 2 - explosion->height / 2;
     explosion->startTime = currentTime;
@@ -534,7 +545,7 @@ void SceneMain::renderExplosions()
 
 void SceneMain::dropItem(Enemy *enemy)
 {
-    auto item = new Item(itemLifeTemplate);
+    auto item = new Item(itemLifePrototype);
     item->position.x = enemy->position.x + enemy->width / 2 - item->width / 2;
     item->position.y = enemy->position.y + enemy->height / 2 - item->height / 2;
     float angle = dis(gen) * 2 * M_PI;

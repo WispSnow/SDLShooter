@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 #include "Object.h"
+#include "PlayerProjPool.h"
 #include <list>
 #include <random>
 #include <map>
@@ -34,12 +35,15 @@ private:
     bool isDead = false; // 玩家是否死亡
     std::mt19937 gen; // 随机数生成器
     std::uniform_real_distribution<float> dis; // 随机数分布器
-    // 创建每个物体的模版
-    Enemy enemyTemplate;
-    ProjectilePlayer projectilePlayerTemplate;
-    ProjectileEnemy projectileEnemyTemplate;
-    Explosion explosionTemplate;
-    Item itemLifeTemplate;
+    // 创建每个物体的原型
+    Enemy enemyPrototype;
+    ProjectilePlayer projectilePlayerPrototype;
+    ProjectileEnemy projectileEnemyPrototype;
+    Explosion explosionPrototype;
+    Item itemLifePrototype;
+
+    // 创建内存池
+    PlayerProjPool* playerProjPool = nullptr;
 
     // 创建每个物体的容器
     std::list<Enemy*> enemies;
