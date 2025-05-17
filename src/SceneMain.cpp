@@ -521,7 +521,7 @@ void SceneMain::renderExplosions()
 {
     for (auto explosion : explosions)
     {
-        SDL_Rect src = {explosion->currentFrame * explosion->width, 0, explosion->width / 2, explosion->height / 2};
+        SDL_Rect src = {explosion->currentFrame * explosion->width / 2, 0, explosion->width / 2, explosion->height / 2};
         SDL_Rect dst = {
             static_cast<int>(explosion->position.x), 
             static_cast<int>(explosion->position.y), 
