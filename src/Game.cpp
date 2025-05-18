@@ -281,7 +281,7 @@ void Game::renderBackground()
         for (int posX = 0; posX < getWindowWidth(); posX += nearStars.width)
         {
             SDL_Rect dstRect = {posX, posY, nearStars.width, nearStars.height};
-            SDL_RenderCopy(renderer, nearStars.texture, nullptr, &dstRect);
+            SDL_RenderCopy(renderer, nearStars.texture, NULL, &dstRect);
         }
         
     }

@@ -56,7 +56,7 @@ struct Explosion{
     int width = 0;
     int height = 0;
     int currentFrame = 0;
-    int totlaFrame = 0;
+    int totalFrame = 0;
     Uint32 startTime = 0;
     Uint32 FPS = 10;
 };

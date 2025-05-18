@@ -115,7 +115,7 @@ void SceneMain::init()
 
     explosionTemplate.texture = IMG_LoadTexture(game.getRenderer(), "assets/effect/explosion.png");
     SDL_QueryTexture(explosionTemplate.texture, NULL, NULL, &explosionTemplate.width, &explosionTemplate.height);
-    explosionTemplate.totlaFrame = explosionTemplate.width / explosionTemplate.height;
+    explosionTemplate.totalFrame = explosionTemplate.width / explosionTemplate.height;
     explosionTemplate.height *= 2;
     explosionTemplate.width = explosionTemplate.height;
 
@@ -508,7 +508,7 @@ void SceneMain::updateExplosions(float)
     {
         auto explosion = *it;
         explosion->currentFrame = (currentTime - explosion->startTime) * explosion->FPS / 1000;
-        if (explosion->currentFrame >= explosion->totlaFrame){
+        if (explosion->currentFrame >= explosion->totalFrame){
             delete explosion;
             it = explosions.erase(it);
         }else{
