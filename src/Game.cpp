@@ -44,6 +44,7 @@ void Game::init()
 {
     frameTime = 1000 / FPS;
     // SDL 初始化
+    SDL_SetHint(SDL_HINT_IME_SHOW_UI, "1");
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         isRunning = false;

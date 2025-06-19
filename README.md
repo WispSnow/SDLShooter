@@ -1,8 +1,12 @@
 # SDLShooter
 C++游戏开发的入门教程，利用SDL2（SDL3）开发一款太空战机类型的游戏
 
+([C++游戏开发之旅](https://pan.baidu.com/s/1xGGgZbhE6WuSPzlKuTmdMw?pwd=wd9g) 第一期)
+
 ## 项目简介
 此项目为教学演示用途，配套教程：[视频](https://www.bilibili.com/video/BV1wSCFYQEyc/?share_source=copy_web&vd_source=38785218fa1d2c5dfde79f8b24baf0b6)，[文字](https://cppgamedev.top/courses/sdl-space-shooter)
+
+>因网络时常不稳定，环境安装包及代码均可从[百度网盘](https://pan.baidu.com/s/1aGyLFfrQQlOylKy03WLL-g?pwd=hmjz)中下载。如果使用`Library.zip`，则只需要配置环境变量即可（代码版本可能落后于Github仓库）
 
 提示：仓库中包含了所有课节的代码，你可以根据视频教程的进度查找对应的代码。<img src="https://theorhythm.top/gamedev/tags.png" style='width: 400px;' />
 <img src="https://theorhythm.top/gamedev/download.png" style='width: 800px;' />
@@ -51,11 +55,19 @@ sudo apt install cmake libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-t
 	提示安装完毕后即可完成配置。
 
 ### Windows
-1. 安装Visual Studio 生成工具。首先打开[官网](https://visualstudio.microsoft.com/zh-hans/downloads/)，下拉网页找到“用于Visual Studio的工具”。展开后找到“Visual Studio 2022 生成工具”下载安装。<img src="https://theorhythm.top/gamedev/7ff398f915dbedd2b382451a7c5cb184.png" style='width: 800px;' /><img src="https://theorhythm.top/gamedev/116473927cc188862aaad4df9be93761.png" style='width: 800px;' />
+1. 安装Visual Studio 生成工具。首先打开[官网](https://visualstudio.microsoft.com/zh-hans/downloads/)，下拉网页找到“用于Visual Studio的工具”。展开后找到“Visual Studio 2022 生成工具”下载安装。
+<img src="https://theorhythm.top/gamedev/7ff398f915dbedd2b382451a7c5cb184.png" style='width: 800px;' /><img src="https://theorhythm.top/gamedev/116473927cc188862aaad4df9be93761.png" style='width: 800px;' />
 <img src="https://theorhythm.top/gamedev/463dd4c2280d54b6f1ac16634653b4de.png" style='width: 800px;' />
+> 如果因为网络因素下载困难，找到[百度网盘](https://pan.baidu.com/s/1aGyLFfrQQlOylKy03WLL-g?pwd=hmjz)中的 `VS2022CppOffline.rar`，下载后解压，然后打开 `Windows PowerShell`，定位到解压后的目录，执行
+>```
+>.\vs_BuildTools.exe --noweb --add Microsoft.VisualStudio.>Workload.VCTools --includeRecommended
+>```
+><img src="https://theorhythm.top/gamedev/SS/vs2022offline_command.png" style='width: 800px;' />
+>之后按照默认的设置安装即可
+><img src="https://theorhythm.top/gamedev/SS/vs2022offline.png" style='width: 800px;' />
 
 2. 分别下载[sdl2](https://github.com/libsdl-org/SDL/releases/)，[SDL2-image](https://github.com/libsdl-org/SDL_image/releases), [SDL2-mixer](https://github.com/libsdl-org/SDL_mixer/releases), [sdl2-ttf](https://github.com/libsdl-org/SDL_ttf/releases) 的msvc开发版。<img src="https://theorhythm.top/gamedev/1dd680c2fdcfecbdb45534d6d5f78501.png" style='width: 800px;' /> 下载后将4个文件全部解压到任意指定文件夹中（例如 `C:\Library\SDL2`）。<img src="https://theorhythm.top/gamedev/bfbeb9fe00f29d39aea12306c0cf69c8.png" style='width: 800px;' />
-> 如果因为网络因素下载困难，也可以直接使用我下载好的SDL库：[百度网盘](https://pan.baidu.com/s/1aGyLFfrQQlOylKy03WLL-g?pwd=hmjz)，版本与教程相同
+> 如果因为网络因素下载困难，也可以直接使用我下载好的SDL库：[百度网盘](https://pan.baidu.com/s/1aGyLFfrQQlOylKy03WLL-g?pwd=hmjz) 中的`Library.zip`，版本与教程相同
 
 3. 设置环境变量，将上一步得到的`文件夹路径` 及 `文件夹路径\lib\x64` 添加到Path变量中<img src="https://theorhythm.top/gamedev/03c93aa96af29d93c4889cc10c14a123.png" />
 
@@ -72,6 +84,12 @@ sudo apt install cmake libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-t
 5. 可选：搜索安装AI辅助插件（选一个安装即可，以免冲突）。
 	- 如果无法科学上网，推荐国内可用且下载量大的，例如 `CodeGeeX`，`fitten`等。
 	- 如果能够科学上网，免费的推荐`Codeium`，付费的推荐 `Github Copilot`。
+
+### Windows补充配置
+如果编译时出现乱码，需要设置对UTF-8支持（针对Windows10）：
+> 设置 -> 时间和语言 -> 区域 -> 其他日期、时间和区域设置 -> 更改日期、时间或数字格式 -> 管理 -> 更改系统区域设置 -> 勾选“Beta 版：使用 Unicode UTF-8 提供全球语言支持（U）”
+<img src="https://theorhythm.top/gamedev/Windows%E8%AE%BE%E7%BD%AEutf-8%E7%BC%96%E7%A0%81.png" style='width: 600px;' />
+Windows11找到类似的地方设置即可
 
 ## 素材包下载
 百度网盘：https://pan.baidu.com/s/1sTj6cp49sxvMWmfWGhvmgw?pwd=2bk8
