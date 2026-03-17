@@ -2,6 +2,9 @@
 .DS_Store
 **/.DS_Store
 
+# msc
+save.dat
+
 # IDE
 .vscode/
 .config/
@@ -9,6 +12,7 @@
 # build
 build/
 build-*/
+build_*/
 
 # Prerequisites
 *.d
@@ -42,3 +46,4 @@ build-*/
 *.exe
 *.out
 *.app
+SDLShooter*

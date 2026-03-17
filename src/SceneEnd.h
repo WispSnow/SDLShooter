@@ -17,7 +17,8 @@ private:
     bool isTyping = true;
     std::string name = "";
     float blinkTimer = 1.0f;
-    Mix_Music* bgm;
+    MIX_Audio* bgm;
+    MIX_Track* bgmTrack;
 
     void renderPhase1();
     void renderPhase2();

@@ -6,11 +6,15 @@
 void SceneEnd::init()
 {
     // 载入背景音乐
-    bgm = Mix_LoadMUS("assets/music/06_Battle_in_Space_Intro.ogg");
+    bgm = MIX_LoadAudio(game.getMixer(), "assets/music/06_Battle_in_Space_Intro.ogg", false);
     if (!bgm) {
         SDL_LogError(SDL_LOG_PRIORITY_ERROR, "Failed to load music: %s", SDL_GetError());
     }
-    Mix_PlayMusic(bgm, -1);
+    bgmTrack = MIX_CreateTrack(game.getMixer());
+    MIX_SetTrackAudio(bgmTrack, bgm);
+    MIX_SetTrackGain(bgmTrack, 2.0f);
+    MIX_SetTrackLoops(bgmTrack, -1);
+    MIX_PlayTrack(bgmTrack, 0);
 
     if (!SDL_TextInputActive(game.getWindow())){
         SDL_StartTextInput(game.getWindow());
@@ -39,9 +43,12 @@ void SceneEnd::render()
 
 void SceneEnd::clean()
 {
+    if (bgmTrack != nullptr){
+        MIX_StopTrack(bgmTrack, 0);
+        MIX_DestroyTrack(bgmTrack);
+    }
     if (bgm != nullptr){
-        Mix_HaltMusic();
-        Mix_FreeMusic(bgm);
+        MIX_DestroyAudio(bgm);
     }
 }
 

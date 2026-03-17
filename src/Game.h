@@ -6,6 +6,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <SDL3_mixer/SDL_mixer.h>
 #include <string>
 #include <map>
 
@@ -38,6 +39,7 @@ public:
     // getters
     SDL_Window* getWindow() { return window; }
     SDL_Renderer* getRenderer() { return renderer; }
+    MIX_Mixer* getMixer() { return mixer; }
     float getWindowWidth() { return windowWidth; }
     float getWindowHeight() { return windowHeight; }
     int getFinalScore() { return finalScore; }
@@ -56,6 +58,7 @@ private:
     Scene* currentScene = nullptr;
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
+    MIX_Mixer* mixer = nullptr;
     float windowWidth = 600;
     float windowHeight = 800;
     int FPS = 60;

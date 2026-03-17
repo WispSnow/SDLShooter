@@ -24,7 +24,8 @@ public:
 
 private:
     Player player;
-    Mix_Music* bgm;
+    MIX_Audio* bgm;
+    MIX_Track* bgmTrack;
     SDL_Texture* uiHealth;
     TTF_Font* scoreFont;
     int score = 0;
@@ -46,7 +47,7 @@ private:
     std::list<ProjectileEnemy*> projectilesEnemy;
     std::list<Explosion*> explosions;
     std::list<Item*> items;
-    std::map<std::string, Mix_Chunk*> sounds; // 存储音效
+    std::map<std::string, MIX_Audio*> sounds; // 存储音效
     
     // 渲染相关
     void renderItems();

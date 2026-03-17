@@ -17,7 +17,8 @@ public:
     virtual void handleEvent(SDL_Event* event) override;
 
 private:
-    Mix_Music* bgm; // 背景音乐
+    MIX_Audio* bgm; // 背景音乐
+    MIX_Track* bgmTrack; // 背景音乐轨道
     float timer = 0.0f; // 计时器
 };
 
