@@ -22,15 +22,31 @@ int main(int, char**) {
     SDL_Texture *texture = IMG_LoadTexture(renderer, "assets/image/bg.png");
 
     // SDL_Mixer初始化
-    if (!Mix_OpenAudio(0, NULL)) {
-        std::cerr << "Mix_OpenAudio Error: " << SDL_GetError() << std::endl;
+    if (!MIX_Init()) {
+        std::cerr << "MIX_Init Error: " << SDL_GetError() << std::endl;
         return 1;
     }
+    // 创建Mixer
+    MIX_Mixer *mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL);
 
-    // 读取音乐
-    Mix_Music *music = Mix_LoadMUS("assets/music/03_Racing_Through_Asteroids_Loop.ogg");
-    // 播放音乐
-    Mix_PlayMusic(music, -1);
+    // 创建针对音乐的音轨
+    MIX_Track *music_track = MIX_CreateTrack(mixer);
+
+    // 读取音乐数据(第一个参数可以为空)
+    MIX_Audio *music_data = MIX_LoadAudio(mixer, "assets/music/03_Racing_Through_Asteroids_Loop.ogg", false);
+    // 将音乐数据加载到音轨中
+    MIX_SetTrackAudio(music_track, music_data);
+    // 播放音乐(播放一次)
+    // MIX_PlayTrack(music_track, 0);
+
+    // 播放音乐（无限循环）
+    SDL_PropertiesID play_props = SDL_CreateProperties();   // 创建一个空的属性容器
+    SDL_SetNumberProperty(play_props, MIX_PROP_PLAY_LOOPS_NUMBER, -1);  // 设置循环次数为-1，表示无限循环
+    MIX_PlayTrack(music_track, play_props);  // 播放音轨，传入属性容器
+    SDL_DestroyProperties(play_props);  // 播放后可以销毁属性容器，Mixer会复制需要的数据
+
+    // 读取音效数据
+    MIX_Audio *effect_data = MIX_LoadAudio(mixer, "assets/sound/eff5.wav", true);
 
     // SDL_TTF初始化
     if (!TTF_Init()) {
@@ -52,6 +68,10 @@ int main(int, char**) {
         if (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT) {
                 break;
+            }
+            if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+                // 播放音效
+                MIX_PlayAudio(mixer, effect_data);
             }
         }
 
@@ -83,9 +103,10 @@ int main(int, char**) {
     SDL_DestroyTexture(texture);
 
     // 清理音乐资源
-    Mix_FreeMusic(music);
-    Mix_CloseAudio();
-    Mix_Quit();
+    MIX_DestroyAudio(music_data);   // 销毁音乐数据
+    // MIX_DestroyTrack(music_track);   // 销毁音轨
+    MIX_DestroyMixer(mixer);    // 销毁Mixer设备
+    MIX_Quit();
 
     // 清理字体资源
     SDL_DestroySurface(surface);

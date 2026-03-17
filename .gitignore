@@ -6,9 +6,13 @@
 .vscode/
 .config/
 
+# msc
+save.dat
+
 # build
 build/
 build-*/
+build_*/
 
 # Prerequisites
 *.d
@@ -42,3 +46,4 @@ build-*/
 *.exe
 *.out
 *.app
+SDLShooter*
